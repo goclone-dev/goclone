@@ -1,54 +1,27 @@
-# set environment variables to be used in the build process
+version: 2
+
 env:
-  # enable GO111Modules if you are using Go1.11 modules in your project for dependency management
   - GO111MODULE=on
-  # Disable CGO - We will go more into this later
   - CGO_ENABLED=0
-# before are hooks that will be run before any builds are done, so good to put install scripts and stuff that your builds need here
+
 before:
   hooks:
-    # Remove unused packaged from the build process
     - go mod tidy
-    # You may remove this if you don't use go modules - Downloads all modules specified in go.mod
     - go mod download
-# buids. This is very basic, but there is a ton of customization you can do here.
-# I would check out https://goreleaser.com/customization/ to learn more.
+
 builds:
   - env:
       - CGO_ENABLED=0
-    # your entrypoint into your application
     main: ./cmd/goclone/main.go
-    # the name of the binary that you want to generate - this will also be the binary name for when we get to homebrew...
-    # Example: goclone <url> where goclone is the name of the binary
     binary: goclone
-# The different tar archives to build for - includes naming customization and such :)
+
 archives:
-  # default format for Mac (darwin) and Linux
-  - format: tar.gz
-    # if the OS is windows, we override and put everything in a .zip instead.
-    format_overrides:
-      - goos: windows
-        format: zip
-    # Just the naming convention for tarballs... Example: msconsole_1.0.0_darwin_64bit
-    name_template: "{{.ProjectName}}_{{.Version}}_{{.Os}}-{{.Arch}}"
-    # Replace the cryptic arch's with readable human naming conventions
-    replacements:
-      amd64: 64bit
-      386: 32bit
-      arm: ARM
-      arm64: ARM64
-      darwin: macOS
-      linux: Linux
-      windows: Windows
-    files:
-      - README.md
-# The generated checksum after your build. No need to touch this unless you know what you are doing.
+  - formats: [binary]
+    name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}-{{ .Arch }}"
+
 checksum:
   name_template: "checksums.txt"
-# The name of the reason snapshot
-snapshot:
-  name_template: "{{ .Tag }}-next"
-# GoReleaser will generate you a changelog depending on the commits that you have created.
+
 changelog:
   sort: asc
   filters:
@@ -58,11 +31,3 @@ changelog:
       - "README"
       - Merge pull request
       - Merge branch
-# Seperate repo that you need to create before you deploy.
-brews:
-  - tap:
-      owner: imthaghost
-      name: homebrew-goclone
-    folder: Formula
-    homepage: https://github.com/goclone-dev/goclone
-    description: Website Cloner - Utilizes powerful go routines to clone websites to your computer within seconds.
