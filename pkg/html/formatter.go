@@ -1,7 +1,7 @@
 package html
 
 import (
-	"io/ioutil"
+	"os"
 
 	"github.com/yosssi/gohtml"
 )
@@ -9,18 +9,16 @@ import (
 // FormatHTML will formart any given string of HTML
 func FormatHTML(filePath string) {
 	// TODO: Implement
-	dat, err := ioutil.ReadFile(filePath)
+	dat, err := os.ReadFile(filePath)
 	if err != nil {
 		panic(err)
 	}
 	data := gohtml.Format(string(dat))
 	b := []byte(data)
-	error := ioutil.WriteFile(filePath, b, 0777)
+	error := os.WriteFile(filePath, b, 0777)
 	// handle this error
 	if error != nil {
 		// print it out
 		panic(error)
 	}
 }
-
-

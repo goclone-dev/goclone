@@ -30,7 +30,10 @@ func Collector(ctx context.Context, url string, projectPath string, cookieJar *c
 		// print css file was found
 		fmt.Println("Css found", "-->", link)
 		// extraction
-		Extractor(e.Request.AbsoluteURL(link), projectPath)
+		if err := Extractor(e.Request.AbsoluteURL(link), projectPath); err != nil {
+			// No panics: registramos y continuamos para no abortar el crawl completo
+			fmt.Printf("warning: failed to extract %s: %v\n", link, err)
+		}
 	})
 
 	// search for all script tags with src attribute -- JS
@@ -40,7 +43,9 @@ func Collector(ctx context.Context, url string, projectPath string, cookieJar *c
 		// Print link
 		fmt.Println("Js found", "-->", link)
 		// extraction
-		Extractor(e.Request.AbsoluteURL(link), projectPath)
+		if err := Extractor(e.Request.AbsoluteURL(link), projectPath); err != nil {
+			fmt.Printf("warning: failed to extract %s: %v\n", link, err)
+		}
 	})
 
 	// serach for all img tags with src attribute -- Images
@@ -53,7 +58,9 @@ func Collector(ctx context.Context, url string, projectPath string, cookieJar *c
 		// Print link
 		fmt.Println("Img found", "-->", link)
 		// extraction
-		Extractor(e.Request.AbsoluteURL(link), projectPath)
+		if err := Extractor(e.Request.AbsoluteURL(link), projectPath); err != nil {
+			fmt.Printf("warning: failed to extract %s: %v\n", link, err)
+		}
 	})
 
 	// Visit each url and wait for stuff to load :)

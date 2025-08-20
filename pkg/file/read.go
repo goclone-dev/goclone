@@ -11,6 +11,7 @@ func Exists(filepath string) bool {
 	return !errors.Is(err, os.ErrNotExist)
 }
 
+// GetFileContent reads the content of a file and returns it as a string
 func GetFileContent(filepath string) string {
 	if _, err := os.Stat(filepath); errors.Is(err, os.ErrNotExist) {
 		return ""
