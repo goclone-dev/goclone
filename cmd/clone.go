@@ -61,7 +61,7 @@ func setupCookieJar(args []string, cookies []string) (*cookiejar.Jar, error) {
 			if i := strings.IndexByte(f, '='); i >= 0 {
 				k, v = f[:i], strings.TrimRight(f[i+1:], ";")
 			} else {
-				return nil, fmt.Errorf("No = in cookie %q", c)
+				return nil, fmt.Errorf("no = in cookie %q", c)
 			}
 			cs = append(cs, &http.Cookie{Name: k, Value: v})
 		}
