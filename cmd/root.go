@@ -7,6 +7,7 @@ import (
 	"os/signal"
 
 	"github.com/spf13/cobra"
+	relversion "sigs.k8s.io/release-utils/version"
 )
 
 var (
@@ -56,6 +57,9 @@ var (
 
 // Execute the clone command
 func Execute() {
+	// Subcommand `version` from release-utils
+	rootCmd.AddCommand(relversion.Version())
+
 	// Persistent Flags
 	pf := rootCmd.PersistentFlags()
 	pf.BoolVarP(&Open, "open", "o", false, "Automatically open project in deafult browser")

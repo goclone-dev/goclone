@@ -14,6 +14,13 @@ builds:
       - CGO_ENABLED=0
     main: ./cmd/goclone/main.go
     binary: goclone
+    flags:
+      - -buildvcs=true
+    ldflags:
+      - -s -w
+      - -X sigs.k8s.io/release-utils/version.gitVersion={{.Version}}
+      - -X sigs.k8s.io/release-utils/version.gitCommit={{.Commit}}
+      - -X sigs.k8s.io/release-utils/version.buildDate={{ .Date }}
 
 archives:
   - formats: [binary]
