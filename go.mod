@@ -6,11 +6,11 @@ require (
 	github.com/PuerkitoBio/goquery v1.11.0
 	github.com/fatih/color v1.18.0
 	github.com/gocolly/colly/v2 v2.3.0
-	github.com/labstack/echo/v4 v4.14.0
+	github.com/labstack/echo/v4 v4.15.0
 	github.com/spf13/cobra v1.10.2
 	github.com/torden/go-strutil v0.1.7
 	github.com/yosssi/gohtml v0.0.0-20190915184251-7ff6f235ecaf
-	sigs.k8s.io/release-utils v0.12.2
+	sigs.k8s.io/release-utils v0.12.3
 )
 
 require (
